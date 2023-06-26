@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'book.dart';
+import 'book_detail_page.dart';
 
 class HomePage extends StatelessWidget {
   final List<Book> books = [
@@ -27,16 +28,26 @@ class HomePage extends StatelessWidget {
       body: ListView.builder(
         itemCount: books.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            margin: const EdgeInsets.all(8.0),
-            child: ListTile(
-              leading: Image.network(
-                books[index].imageUrl,
-                width: 50,
-                height: 50,
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookDetailPage(book: books[index]),
+                ),
+              );
+            },
+            child: Card(
+              margin: const EdgeInsets.all(8.0),
+              child: ListTile(
+                leading: Image.network(
+                  books[index].imageUrl,
+                  width: 50,
+                  height: 50,
+                ),
+                title: Text(books[index].title),
+                subtitle: Text('${books[index].pageCount} pages'),
               ),
-              title: Text(books[index].title),
-              subtitle: Text('${books[index].pageCount} pages'),
             ),
           );
         },
