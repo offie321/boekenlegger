@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "4957775579",
+    "project_id": "boekenlegger-d6c58",
+    "storage_bucket": "boekenlegger-d6c58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4957775579:android:66bae7466fa533ff5ccefe",
+        "android_client_info": {
+          "package_name": "com.example.boekenlegger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "4957775579-kj94s8hp27va2theomeb86kercuose0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvN7ySPmN0yZOHPyd5rsFd2hUnzpw-iNE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4957775579-kj94s8hp27va2theomeb86kercuose0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
