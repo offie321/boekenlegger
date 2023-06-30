@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'book.dart';
 import 'book_detail_page.dart';
+import 'add_book_page.dart';
 
 class HomePage extends StatelessWidget {
   final List<Book> books = [
@@ -51,6 +52,15 @@ class HomePage extends StatelessWidget {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddBookPage()),
+          );
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
