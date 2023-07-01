@@ -86,7 +86,7 @@ class _AddBookPageState extends State<AddBookPage> {
       // Access the Firestore collection and add the book
       final CollectionReference booksCollection =
       FirebaseFirestore.instance.collection('books');
-      final newBook = Book(title: title, pageCount: pageCount, imageUrl: imageUrl, userId: '');
+      final newBook = Book(title: title, pageCount: pageCount, imageUrl: imageUrl, userId: '', currentPageCount: 0,);
       await booksCollection.add(newBook.toMap());
 
       // Book added successfully, navigate back to the home page or perform any desired action

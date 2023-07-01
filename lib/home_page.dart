@@ -87,6 +87,7 @@ class HomePage extends StatelessWidget {
                       final book = books[index];
                       final bookDocument = snapshot.data!.docs[index];
                       final bookId = bookDocument.id; // Retrieve the document ID
+                      final double percentage = (book.currentPageCount / book.pageCount) * 100;
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -144,6 +145,14 @@ class HomePage extends StatelessWidget {
                                         SizedBox(height: 4),
                                         Text(
                                           '${books[index].pageCount} pages',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                        SizedBox(height: 4),
+                                        Text(
+                                          'Progress: ${percentage.toStringAsFixed(2)}%',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey[600],

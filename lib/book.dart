@@ -1,13 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Book {
   final String title;
   final int pageCount;
   final String imageUrl;
+  int currentPageCount;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final String userId;
 
-  Book({required this.title, required this.pageCount, required this.imageUrl, required this.userId});
+  Book({required this.title, required this.pageCount, required this.imageUrl, required this.userId, required this.currentPageCount,});
 
   String? getCurrentUserUid() {
     final User? user = _auth.currentUser;
@@ -24,6 +26,7 @@ class Book {
       pageCount: map['pageCount'] as int,
       imageUrl: map['imageUrl'] as String,
       userId: map['userId'] as String,
+      currentPageCount: map['currentPageCount'] as int? ?? 0,
     );
   }
 
@@ -33,7 +36,20 @@ class Book {
       'pageCount': pageCount,
       'imageUrl': imageUrl,
       'userId': getCurrentUserUid(),
+      'currentPageCount': currentPageCount,
     };
+  }
+
+  Future<void> updateCurrentPageCount(String documentId, int newCurrentPageCount) async {
+    final CollectionReference booksCollection =
+    FirebaseFirestore.instance.collection('books');
+
+    try {
+      await booksCollection.doc(documentId).update({'currentPageCount': newCurrentPageCount});
+      currentPageCount = newCurrentPageCount; // Update the current page count locally
+    } catch (e) {
+      print('Failed to update current page count: $e');
+    }
   }
 
 
