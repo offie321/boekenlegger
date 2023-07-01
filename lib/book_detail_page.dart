@@ -23,12 +23,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
   Future<String?> getBookDocumentId(String bookTitle) async {
-    final CollectionReference booksCollection =
-    FirebaseFirestore.instance.collection('books');
+    final CollectionReference booksCollection = FirebaseFirestore.instance.collection('books');
 
     try {
-      final QuerySnapshot snapshot =
-      await booksCollection.where('title', isEqualTo: bookTitle).get();
+      final QuerySnapshot snapshot = await booksCollection.where('title', isEqualTo: bookTitle).get();
 
       if (snapshot.docs.isNotEmpty) {
         return snapshot.docs.first.id; // Return the document ID of the first matching document
@@ -44,6 +42,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
         title: Text(widget.book.title),
         actions: [
           IconButton(
@@ -55,53 +54,117 @@ class _BookDetailPageState extends State<BookDetailPage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.network(
-              widget.book.imageUrl,
-              width: 150,
-              height: 150,
+      body: Column(
+        children: [
+          Expanded(
+            child: Hero(
+              tag: widget.book.imageUrl,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(widget.book.imageUrl),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 16),
-            Text('Page: $currentPage / ${widget.book.pageCount}'), // Show current page and max pages
-            ElevatedButton(
-              onPressed: () async {
-                String? documentId = await getBookDocumentId(widget.book.title);
-                if (documentId != null) {
-                  int newCurrentPageCount = currentPage + 1; // Increment the current page count
-                  await widget.book.updateCurrentPageCount(documentId, newCurrentPageCount);
-                  setState(() {
-                    currentPage = newCurrentPageCount; // Update the current page count locally
-                  });
-                } else {
-                  print('Book document not found!');
-                }
-              },
-              child: Text('Increment Page'),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 75, 16 , 75),
+            child: Column(
+              children: [
+                Text(
+                  'Page: $currentPage / ${widget.book.pageCount}',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    letterSpacing: 1.2,
+                  ),
+                ), // Show current page and max pages
+                SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: (currentPage == widget.book.pageCount)
+                      ? null
+                      : () async {
+                    String? documentId = await getBookDocumentId(widget.book.title);
+                    if (documentId != null) {
+                      int newCurrentPageCount = currentPage + 1; // Increment the current page count
+                      await widget.book.updateCurrentPageCount(documentId, newCurrentPageCount);
+                      setState(() {
+                        currentPage = newCurrentPageCount; // Update the current page count locally
+                      });
+                    } else {
+                      print('Book document not found!');
+                    }
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      '+',
+                      style: TextStyle(
+                        fontSize: 35, // Increase the font size value to make the text bigger
+                      ),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      (currentPage == widget.book.pageCount) ? Colors.grey : Colors.orangeAccent,
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: currentPage > 0 ? () async {
+                    String? documentId = await getBookDocumentId(widget.book.title);
+                    if (documentId != null) {
+                      int newCurrentPageCount = currentPage - 1; // Decrement the current page count
+                      await widget.book.updateCurrentPageCount(documentId, newCurrentPageCount);
+                      setState(() {
+                        currentPage = newCurrentPageCount; // Update the current page count locally
+                      });
+                    } else {
+                      print('Book document not found!');
+                    }
+                  } : null,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      '-',
+                      style: TextStyle(
+                        fontSize: 35,
+                      ),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(MaterialState.disabled)) {
+                        return Colors.grey; // Set the background color when the button is disabled
+                      } else {
+                        return Colors.orangeAccent; // Set the background color when the button is enabled
+                      }
+                    }),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ),
+                ],
             ),
-            ElevatedButton(
-              onPressed: () async {
-                String? documentId = await getBookDocumentId(widget.book.title);
-                if (documentId != null) {
-                  int newCurrentPageCount = currentPage - 1; // Decrement the current page count
-                  if (newCurrentPageCount >= 0) {
-                    await widget.book.updateCurrentPageCount(documentId, newCurrentPageCount);
-                    setState(() {
-                      currentPage = newCurrentPageCount; // Update the current page count locally
-                    });
-                  } else {
-                    print('Invalid page count!');
-                  }
-                } else {
-                  print('Book document not found!');
-                }
-              },
-              child: Text('Decrement Page'),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
