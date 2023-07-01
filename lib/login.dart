@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import the Firebase Core package
+import 'package:firebase_core/firebase_core.dart';
 import 'home_page.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -48,6 +48,7 @@ class LoginScreen extends StatelessWidget {
                   );
                 } catch (e) {
                   // Handle login errors
+                  _showErrorSnackBar(context, 'Failed to sign in');
                   print('Login Error: $e');
                 }
               },
@@ -64,20 +65,24 @@ class LoginScreen extends StatelessWidget {
     try {
       await Firebase.initializeApp(); // Initialize Firebase
 
-      // Call Firebase sign in with email and password
-      UserCredential userCredential =
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Access the logged-in user
-      User? user = userCredential.user;
 
       // Do something with the user, such as updating the login state or navigating to the home page
     } catch (e) {
       throw Exception('Failed to sign in: $e');
     }
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 
