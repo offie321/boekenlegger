@@ -11,6 +11,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
         title: Text('Login Screen'),
       ),
       body: Padding(
@@ -53,6 +54,9 @@ class LoginScreen extends StatelessWidget {
                 }
               },
               child: Text('Log In'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent), // Set the desired background color
+              ),
             ),
           ],
         ),
