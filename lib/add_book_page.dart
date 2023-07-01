@@ -23,6 +23,7 @@ class _AddBookPageState extends State<AddBookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
         title: Text('Add Book'),
       ),
       body: Padding(
@@ -56,6 +57,9 @@ class _AddBookPageState extends State<AddBookPage> {
                   child: Image.file(selectedImage!),
               )
                   : Text('Select Image'),
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // Set the desired background color
+              ),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -63,6 +67,9 @@ class _AddBookPageState extends State<AddBookPage> {
                 _addBook();
               },
               child: Text('Add Book'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent), // Set the desired background color
+              ),
             ),
           ],
         ),
