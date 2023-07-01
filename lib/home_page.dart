@@ -7,6 +7,23 @@ import 'add_book_page.dart';
 
 
 class HomePage extends StatelessWidget {
+
+
+  Future<void> deleteBook(String bookId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('books')
+          .doc(bookId)
+          .delete();
+
+      // Book deletion successful, handle UI updates or show a success message
+    } catch (e) {
+      // Handle book deletion errors
+      print('Failed to delete book: $e');
+    }
+  }
+
+
   // Get the current user ID
   String getCurrentUserID() {
     final user = FirebaseAuth.instance.currentUser;
@@ -67,13 +84,16 @@ class HomePage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: books.length,
                     itemBuilder: (BuildContext context, int index) {
+                      final book = books[index];
+                      final bookDocument = snapshot.data!.docs[index];
+                      final bookId = bookDocument.id; // Retrieve the document ID
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  BookDetailPage(book: books[index]),
+                                  BookDetailPage(book: book,bookId: bookId,deleteBook: deleteBook),
                             ),
                           );
                         },
