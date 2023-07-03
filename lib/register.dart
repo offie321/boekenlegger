@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'home_page.dart';
-import 'register.dart';
 
-class LoginScreen extends StatelessWidget {
+class RegistrationScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -13,7 +11,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orangeAccent,
-        title: Text('Login Screen'),
+        title: Text('Registration'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -39,41 +37,24 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  // Call the login function
-                  await _loginWithEmailAndPassword(
+                  // Call the registration function
+                  await _registerWithEmailAndPassword(
                       emailController.text, passwordController.text);
 
-                  // Login successful, navigate to the home page or update the login state
+                  // Registration successful, navigate to the home page or perform any desired action
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 } catch (e) {
-                  // Handle login errors
-                  _showErrorSnackBar(context, 'Failed to sign in');
-                  print('Login Error: $e');
+                  // Handle registration errors
+                  _showErrorSnackBar(context, 'Registration failed');
+                  print('Registration Error: $e');
                 }
-              },
-              child: Text('Log In'),
-              style: ButtonStyle(
-                backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                // Set the desired background color
-              ),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegistrationScreen()),
-                );
               },
               child: Text('Register'),
               style: ButtonStyle(
-                backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                // Set the desired background color
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
               ),
             ),
           ],
@@ -82,19 +63,18 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _loginWithEmailAndPassword(
+  Future<void> _registerWithEmailAndPassword(
       String email, String password) async {
     try {
-      await Firebase.initializeApp(); // Initialize Firebase
-
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Do something with the user, such as updating the login state or navigating to the home page
+      // Registration successful
+      // You can optionally do something with the registered user, such as updating the UI or performing additional tasks
     } catch (e) {
-      throw Exception('Failed to sign in: $e');
+      throw Exception('Failed to register: $e');
     }
   }
 
@@ -105,13 +85,4 @@ class LoginScreen extends StatelessWidget {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-}
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
-
-  runApp(MaterialApp(
-    home: LoginScreen(),
-  ));
 }
