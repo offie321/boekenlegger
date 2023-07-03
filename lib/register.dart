@@ -37,11 +37,11 @@ class RegistrationScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  // Call the registration function
+
                   await _registerWithEmailAndPassword(
                       emailController.text, passwordController.text);
 
-                  // Registration successful, navigate to the home page or perform any desired action
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
@@ -71,8 +71,7 @@ class RegistrationScreen extends StatelessWidget {
         password: password,
       );
 
-      // Registration successful
-      // You can optionally do something with the registered user, such as updating the UI or performing additional tasks
+
     } catch (e) {
       throw Exception('Failed to register: $e');
     }

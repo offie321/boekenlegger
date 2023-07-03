@@ -16,8 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isLoggedIn = false; // Set the login state based on your logic
-
+    bool isLoggedIn = false;
     if (isLoggedIn) {
       return MaterialApp(
         title: 'Book Library',
