@@ -14,12 +14,12 @@ class BookDetailPage extends StatefulWidget {
 }
 
 class _BookDetailPageState extends State<BookDetailPage> {
-  int currentPage = 0; // Track the current page count
+  int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    currentPage = widget.book.currentPageCount; // Initialize with the current page count from the book object
+    currentPage = widget.book.currentPageCount;
   }
 
   Future<String?> getBookDocumentId(String bookTitle) async {
@@ -29,13 +29,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
       final QuerySnapshot snapshot = await booksCollection.where('title', isEqualTo: bookTitle).get();
 
       if (snapshot.docs.isNotEmpty) {
-        return snapshot.docs.first.id; // Return the document ID of the first matching document
+        return snapshot.docs.first.id;
       }
     } catch (e) {
       print('Failed to retrieve book document ID: $e');
     }
 
-    return null; // Return null if the book document was not found
+    return null;
   }
 
   @override
@@ -81,7 +81,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     color: Colors.black87,
                     letterSpacing: 1.2,
                   ),
-                ), // Show current page and max pages
+                ),
                 SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -92,10 +92,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       : () async {
                     String? documentId = await getBookDocumentId(widget.book.title);
                     if (documentId != null) {
-                      int newCurrentPageCount = currentPage + 1; // Increment the current page count
+                      int newCurrentPageCount = currentPage + 1;
                       await widget.book.updateCurrentPageCount(documentId, newCurrentPageCount);
                       setState(() {
-                        currentPage = newCurrentPageCount; // Update the current page count locally
+                        currentPage = newCurrentPageCount;
                       });
                     } else {
                       print('Book document not found!');
@@ -106,7 +106,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     child: Text(
                       '+',
                       style: TextStyle(
-                        fontSize: 35, // Increase the font size value to make the text bigger
+                        fontSize: 35,
                       ),
                     ),
                   ),
@@ -126,10 +126,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   onPressed: currentPage > 0 ? () async {
                     String? documentId = await getBookDocumentId(widget.book.title);
                     if (documentId != null) {
-                      int newCurrentPageCount = currentPage - 1; // Decrement the current page count
+                      int newCurrentPageCount = currentPage - 1;
                       await widget.book.updateCurrentPageCount(documentId, newCurrentPageCount);
                       setState(() {
-                        currentPage = newCurrentPageCount; // Update the current page count locally
+                        currentPage = newCurrentPageCount;
                       });
                     } else {
                       print('Book document not found!');
@@ -147,9 +147,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
                       if (states.contains(MaterialState.disabled)) {
-                        return Colors.grey; // Set the background color when the button is disabled
+                        return Colors.grey;
                       } else {
-                        return Colors.orangeAccent; // Set the background color when the button is enabled
+                        return Colors.orangeAccent;
                       }
                     }),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

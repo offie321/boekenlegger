@@ -46,7 +46,7 @@ class Book {
 
     try {
       await booksCollection.doc(documentId).update({'currentPageCount': newCurrentPageCount});
-      currentPageCount = newCurrentPageCount; // Update the current page count locally
+      currentPageCount = newCurrentPageCount;
     } catch (e) {
       print('Failed to update current page count: $e');
     }

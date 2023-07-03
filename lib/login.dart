@@ -39,17 +39,15 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  // Call the login function
                   await _loginWithEmailAndPassword(
                       emailController.text, passwordController.text);
 
-                  // Login successful, navigate to the home page or update the login state
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 } catch (e) {
-                  // Handle login errors
+
                   _showErrorSnackBar(context, 'Failed to sign in');
                   print('Login Error: $e');
                 }
@@ -58,7 +56,7 @@ class LoginScreen extends StatelessWidget {
               style: ButtonStyle(
                 backgroundColor:
                 MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                // Set the desired background color
+
               ),
             ),
             SizedBox(height: 16.0),
@@ -73,7 +71,7 @@ class LoginScreen extends StatelessWidget {
               style: ButtonStyle(
                 backgroundColor:
                 MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                // Set the desired background color
+
               ),
             ),
           ],
@@ -85,14 +83,12 @@ class LoginScreen extends StatelessWidget {
   Future<void> _loginWithEmailAndPassword(
       String email, String password) async {
     try {
-      await Firebase.initializeApp(); // Initialize Firebase
+      await Firebase.initializeApp();
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-      // Do something with the user, such as updating the login state or navigating to the home page
     } catch (e) {
       throw Exception('Failed to sign in: $e');
     }

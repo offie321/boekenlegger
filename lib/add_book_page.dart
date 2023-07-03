@@ -58,7 +58,7 @@ class _AddBookPageState extends State<AddBookPage> {
               )
                   : Text('Select Image'),
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black), // Set the desired background color
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
               ),
             ),
             SizedBox(height: 16.0),
@@ -68,7 +68,7 @@ class _AddBookPageState extends State<AddBookPage> {
               },
               child: Text('Add Book'),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent), // Set the desired background color
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
               ),
             ),
           ],
@@ -81,22 +81,22 @@ class _AddBookPageState extends State<AddBookPage> {
     final String title = titleController.text;
     final int pageCount = int.tryParse(pageCountController.text) ?? 0;
 
-    // Validate book data
+
     if (title.isEmpty || pageCount <= 0 || selectedImage == null) {
       return;
     }
 
     try {
-      // Upload the image file to Firebase Storage and get the image URL
+
       final String imageUrl = await _uploadImage();
 
-      // Access the Firestore collection and add the book
+
       final CollectionReference booksCollection =
       FirebaseFirestore.instance.collection('books');
       final newBook = Book(title: title, pageCount: pageCount, imageUrl: imageUrl, userId: '', currentPageCount: 0,);
       await booksCollection.add(newBook.toMap());
 
-      // Book added successfully, navigate back to the home page or perform any desired action
+
       Navigator.pop(context);
     } catch (e) {
       print('Failed to add book: $e');
@@ -104,28 +104,26 @@ class _AddBookPageState extends State<AddBookPage> {
   }
 
   Future<String> _uploadImage() async {
-    // Get the reference to the Firebase Storage bucket
+
     final firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref();
 
-    // Create a unique file name for the image using a timestamp
+
     final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // Upload the image file to Firebase Storage
     final firebase_storage.UploadTask uploadTask =
     storageRef.child('images/$fileName').putFile(selectedImage!);
 
-    // Get the upload task snapshot to monitor the upload progress
+
     final firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
 
-    // Check if the upload was successful
+
     if (taskSnapshot.state == firebase_storage.TaskState.success) {
-      // Retrieve the image URL
+
       final String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
-      // Return the image URL
+
       return imageUrl;
     } else {
-      // Upload failed
       throw Exception('Image upload failed');
     }
   }

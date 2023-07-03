@@ -11,21 +11,20 @@ class HomePage extends StatelessWidget {
     try {
       await FirebaseFirestore.instance.collection('books').doc(bookId).delete();
 
-      // Book deletion successful, handle UI updates or show a success message
+
     } catch (e) {
-      // Handle book deletion errors
+
       print('Failed to delete book: $e');
     }
   }
 
-  // Get the current user ID
+
   String getCurrentUserID() {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       return user.uid;
     } else {
-      // User is not authenticated or user object is null
-      // Handle the case accordingly in your app
+
       throw Exception('User not authenticated');
     }
   }
@@ -65,7 +64,7 @@ class HomePage extends StatelessWidget {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('books')
-                      .where('userId', isEqualTo: getCurrentUserID()) // Filter books by the authenticated user ID
+                      .where('userId', isEqualTo: getCurrentUserID())
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -79,7 +78,7 @@ class HomePage extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           final book = books[index];
                           final bookDocument = snapshot.data!.docs[index];
-                          final bookId = bookDocument.id; // Retrieve the document ID
+                          final bookId = bookDocument.id;
                           final double percentage = (book.currentPageCount / book.pageCount) * 100;
                           return GestureDetector(
                             onTap: () {
@@ -99,8 +98,8 @@ class HomePage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 side: BorderSide(
-                                  color: (percentage == 100) ? Colors.orangeAccent : Colors.transparent, // Set the desired border color
-                                  width: 2.0, // Set the desired border width
+                                  color: (percentage == 100) ? Colors.orangeAccent : Colors.transparent,
+                                  width: 2.0,
                                 ),
                               ),
                               elevation: 3,
@@ -212,7 +211,7 @@ class HomePage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        backgroundColor: Colors.orangeAccent, // Set the background color to yellow
+        backgroundColor: Colors.orangeAccent,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
