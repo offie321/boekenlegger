@@ -98,6 +98,10 @@ class HomePage extends StatelessWidget {
                               margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(
+                                  color: (percentage == 100) ? Colors.orangeAccent : Colors.transparent, // Set the desired border color
+                                  width: 2.0, // Set the desired border width
+                                ),
                               ),
                               elevation: 3,
                               child: Container(
@@ -146,7 +150,7 @@ class HomePage extends StatelessWidget {
                                             ),
                                             SizedBox(height: 4),
                                             Text(
-                                              'Progress: ${percentage.toStringAsFixed(2)}%',
+                                              (percentage == 100) ? 'Progress: Completed' : 'Progress: ${percentage.toStringAsFixed(2)}%',
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.grey[600],
